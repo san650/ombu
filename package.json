@@ -1,0 +1,30 @@
+{
+  "name": "ombu",
+  "version": "0.0.0",
+  "description": "JavaScript micro library to help modelling really simple page objects.",
+  "homepage": "https://github.com/san650/ombu#readme",
+  "bugs": "https://github.com/san650/ombu/issues",
+  "main": "index.js",
+  "scripts": {
+    "test": "testem ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/san650/ombu.git"
+  },
+  "keywords": [
+    "acceptance",
+    "page object",
+    "page objects",
+    "testing"
+  ],
+  "author": "Santiago Ferreira",
+  "license": "MIT",
+  "devDependencies": {
+    "qunitjs": "^1.20.0",
+    "testem": "^1.1.0"
+  },
+  "dependencies": {
+    "ceibo": "^2.0.0"
+  }
+}
