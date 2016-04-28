@@ -8,6 +8,23 @@ test('uses `visit` as root string', function(assert) {
   assert.equal(tree, '/path');
 });
 
+test('read scope for root', function(assert) {
+  var tree = Ombu.create({
+    scope: '.a-root'
+  });
+
+  assert.equal(tree, '.a-root');
+});
+
+test('uses visits if both are defined', function(assert) {
+  var tree = Ombu.create({
+    visit: '/path',
+    scope: '.a-root'
+  });
+
+  assert.equal(tree, '/path');
+});
+
 test('leaf nodes return a string', function(assert) {
   var tree = Ombu.create({
     foo: '.a-foo'

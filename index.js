@@ -49,9 +49,6 @@
       Ceibo.defineProperty(node, blueprintKey, value);
     } else {
       value = new String(blueprint.scope || '');
-      value.__scope = blueprint.scope;
-      value.__blueprint = blueprint;
-      delete blueprint.scope;
 
       Ceibo.defineProperty(node, blueprintKey, undefined, function() {
         var path = getPath(node);
@@ -66,6 +63,9 @@
         return newvalue;
       });
     }
+
+    value.__scope = blueprint.scope;
+    delete blueprint.scope;
 
     return [value, blueprint];
   }
