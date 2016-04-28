@@ -1,108 +1,124 @@
 !function() {
-  function merge() {
-    var target = arguments[0];
-    var sources = Array.prototype.slice.call(arguments, 1);
-    var source;
+  function def(exports, Ceibo) {
 
-    for(var i = 0; i < sources.length; i++) {
-      source = sources[i];
+    if (Ceibo.Ceibo) {
+      Ceibo = Ceibo.Ceibo;
+    }
 
-      if (!source) {
-        continue;
-      }
+    function merge() {
+      var target = arguments[0];
+      var sources = Array.prototype.slice.call(arguments, 1);
+      var source;
 
-      for(var attr in source) {
-        if (source.hasOwnProperty(attr) && !/^[0-9]+$/.test(attr)) {
-          target[attr] = source[attr];
+      for(var i = 0; i < sources.length; i++) {
+        source = sources[i];
+
+        if (!source) {
+          continue;
+        }
+
+        for(var attr in source) {
+          if (source.hasOwnProperty(attr) && !/^[0-9]+$/.test(attr)) {
+            target[attr] = source[attr];
+          }
         }
       }
+
+      return target;
     }
 
-    return target;
-  }
+    function getPath(node) {
+      var values = [],
+          current = node;
 
-  function getPath(node) {
-    var values = [],
-        current = node;
-
-    if (node.length) {
-      values.push(node);
-    }
-
-    while(current = Ceibo.parent(current)) {
-      if (current.__scope) {
-        values.unshift(current.__scope);
+      if (node.length) {
+        if (node.__isRoot) {
+          if (node.__scope) {
+            values.push(node.__scope);
+          }
+        } else {
+          values.push(node);
+        }
       }
+
+      while(current = Ceibo.parent(current)) {
+        if (current.__scope) {
+          values.unshift(current.__scope);
+        }
+      }
+
+      return values;
     }
 
-    return values;
-  }
+    var FIRST;
+    function buildObject(node, blueprintKey, blueprint) {
+      var value;
 
-  var FIRST;
-  function buildObject(node, blueprintKey, blueprint) {
-    var value;
+      if (FIRST && blueprint.visit) {
+        FIRST = false;
+        value = new String(blueprint.visit);
+        delete blueprint.visit;
+        value.__isRoot = true;
+        Ceibo.defineProperty(node, blueprintKey, value);
+      } else {
+        value = new String(blueprint.scope || '');
 
-    if (FIRST && blueprint.visit) {
-      FIRST = false;
-      value = new String(blueprint.visit);
-      delete blueprint.visit;
-      Ceibo.defineProperty(node, blueprintKey, value);
-    } else {
-      value = new String(blueprint.scope || '');
+        Ceibo.defineProperty(node, blueprintKey, undefined, function() {
+          var path = getPath(node);
+
+          if (value.length) {
+            path.push(value + '');
+          }
+
+          var newvalue = new String(path.join(' '));
+          merge(newvalue, value);
+
+          return newvalue;
+        });
+      }
+
+      value.__scope = blueprint.scope;
+      delete blueprint.scope;
+
+      return [value, blueprint];
+    }
+
+    function buildString(node, blueprintKey, str) {
+      var value = new String(str);
 
       Ceibo.defineProperty(node, blueprintKey, undefined, function() {
         var path = getPath(node);
+        path.push(value + '');
 
-        if (value.length) {
-          path.push(value + '');
-        }
-
-        var newvalue = new String(path.join(' '));
-        merge(newvalue, value);
-
-        return newvalue;
+        return path.join(' ');
       });
     }
 
-    value.__scope = blueprint.scope;
-    delete blueprint.scope;
+    var Ombu = {};
 
-    return [value, blueprint];
+    Ombu.create = function create(definition) {
+      FIRST = true;
+
+      var tree = Ceibo.create(definition || {}, {
+        builder: {
+          object: buildObject,
+          string: buildString
+        }
+      });
+
+      return tree;
+    };
+
+    exports.Ombu = Ombu;
+
+    if (typeof define === 'function') {
+      exports.default = Ombu;
+    }
   }
-
-  function buildString(node, blueprintKey, str) {
-    var value = new String(str);
-
-    Ceibo.defineProperty(node, blueprintKey, undefined, function() {
-      var path = getPath(node);
-      path.push(value);
-
-      return path.join(' ');
-    });
-  }
-
-  var Ombu = {};
-
-  Ombu.create = function create(definition) {
-    FIRST = true;
-
-    var tree = Ceibo.create(definition || {}, {
-      builder: {
-        object: buildObject,
-        string: buildString
-      }
-    });
-
-    return tree;
-  };
 
   if (typeof define === 'function') {
-    define('ombu', ['exports'], function(__exports__) {
-      'use strict';
-      __exports__.Ombu = Ombu;
-      __exports__.default = Ombu;
-    });
+    define('ombu', ['exports', 'ceibo'], def);
   } else {
-    window.Ombu = Ombu;
+    def(window, Ceibo);
   }
 }();

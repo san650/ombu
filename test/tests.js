@@ -84,3 +84,12 @@ test('multiple levels', function(assert) {
   assert.equal(tree.foo.bar.baz, '.a-foo .a-bar');
   assert.equal(tree.foo.bar.baz.qux, '.a-foo .a-bar .a-qux');
 });
+
+test('string property and visit', function(assert) {
+  var tree = Ombu.create({
+    visit: '/path',
+    foo: '.a-foo'
+  });
+
+  assert.equal(tree.foo, '.a-foo');
+});
