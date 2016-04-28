@@ -46,7 +46,7 @@ test('appends scope to nodes', function(assert) {
   assert.equal(tree.foo.bar.baz, '.a-foo .a-bar .a-baz');
 });
 
-test('it works', function(assert) {
+test('multiple levels', function(assert) {
   var tree = Ombu.create({
     foo: {
       scope: '.a-foo',
