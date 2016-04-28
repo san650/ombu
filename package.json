@@ -1,6 +1,6 @@
 {
   "name": "ombu",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "JavaScript micro library to help modelling really simple page objects.",
   "homepage": "https://github.com/san650/ombu#readme",
   "bugs": "https://github.com/san650/ombu/issues",
