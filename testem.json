@@ -1,6 +1,6 @@
 {
   "framework": "qunit",
-  "disable_watching": true,
+  "disable_watching": false,
   "test_page": "test/index.html",
   "src_files": [
     "*.js",
