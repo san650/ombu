@@ -1,9 +1,23 @@
 ---
 language: node_js
 node_js:
-  - "4.2"
+  - "8"
+
+sudo: false
+dist: trusty
+
+addons:
+  chrome: stable
+
+cache:
+  directories:
+    - $HOME/.npm
+
+branches:
+  only:
+    - "master"
 
 before_install:
-  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
-  - "npm config set spin false"
-  - "npm install -g npm@^2"
+  - npm config set spin false
+  - npm install -g npm@4
+  - npm --version
