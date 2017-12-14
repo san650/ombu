@@ -4,7 +4,7 @@
 
 JavaScript micro library to help modelling really simple page objects.
 
-## Examples
+## Synopsis
 
 ```js
 var page = Ombu.create({
@@ -35,6 +35,24 @@ Ombu depends on [`Ceibo`](https://github.com/san650/ceibo) library. You need to 
   </head>
   ...
 </html>
+```
+
+## API
+
+### `Ombu.create(object)`
+
+TBA
+
+### `normalize(text)`
+
+Trim whitespaces at both ends and normalize whitespaces inside `text`.
+
+Due to variations in the HTML parsers in different browsers, the text returned may vary in newlines and other white space.
+
+See [http://api.jquery.com/text/](http://api.jquery.com/text/).
+
+```js
+normalize('Hello   \n\nWorld!\n') === 'Hello World!'
 ```
 
 ## Project's health

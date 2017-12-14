@@ -1,4 +1,4 @@
-module('Unit');
+module('Unit | Ombu.create');
 
 test('uses `visit` as root string', function(assert) {
   var tree = Ombu.create({
@@ -92,4 +92,10 @@ test('string property and visit', function(assert) {
   });
 
   assert.equal(tree.foo, '.a-foo');
+});
+
+module('Unit | .normalize');
+
+test('normalize spaces', function(assert) {
+  assert.equal(normalize('Hello   \n\nWorld!\n'), 'Hello World!');
 });

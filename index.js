@@ -114,6 +114,24 @@
     if (typeof define === 'function') {
       exports.default = Ombu;
     }
+
+    /**
+     * Trim whitespaces at both ends and normalize whitespaces inside `text`
+     *
+     * Due to variations in the HTML parsers in different browsers, the text
+     * returned may vary in newlines and other white space.
+     *
+     * @see http://api.jquery.com/text/
+     */
+    function normalize(string) {
+      if (!string) {
+        string = '';
+      }
+
+      return string.trim().replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
+    }
+
+    exports.normalize = normalize;
   }
 
   if (typeof define === 'function') {
